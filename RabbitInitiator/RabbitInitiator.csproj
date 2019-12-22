@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="EasyNetQ.Management.Client" Version="1.2.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
   </ItemGroup>
 
 </Project>
