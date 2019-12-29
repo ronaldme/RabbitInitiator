@@ -13,4 +13,8 @@
     <PackageReference Include="ReactiveUI.WPF" Version="11.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RabbitInitiator.Main\RabbitInitiator.Main.csproj" />
+  </ItemGroup>
+
 </Project>

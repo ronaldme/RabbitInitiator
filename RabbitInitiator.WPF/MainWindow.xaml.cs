@@ -29,8 +29,8 @@ namespace RabbitInitiator.WPF
                     .DisposeWith(disposableRegistration);
 
                 this.BindCommand(ViewModel,
-                        viewModel => viewModel.CreateUser,
-                        view => view.CreateUser)
+                        viewModel => viewModel.CreateUserAndVhost,
+                        view => view.CreateUserAndVhost)
                     .DisposeWith(disposableRegistration);
             });
         }

@@ -1,16 +1,21 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using RabbitInitiator.Main;
 using ReactiveUI;
 
 namespace RabbitInitiator.WPF.ViewModels
 {
     public class AppViewModel : ReactiveObject
     {
+        private readonly Initiator _rabbitInitiator;
+
         public AppViewModel()
         {
-            CreateUser = ReactiveCommand.Create(() =>
-            {
-                // TODO
-            });
+            _rabbitInitiator = new Initiator();
+
+            CreateUserAndVhost = ReactiveCommand.Create(CreateUserAndVhostImpl, GetCanExecute());
         }
 
         private string _user;
@@ -34,6 +39,21 @@ namespace RabbitInitiator.WPF.ViewModels
             set => this.RaiseAndSetIfChanged(ref _vhost, value);
         }
 
-        public ICommand CreateUser { get; set; }
+        public ICommand CreateUserAndVhost { get; set; }
+
+        public IObservable<Task> CreateUserAndVhostImpl()
+            => Observable.Start(async () => await _rabbitInitiator.CreateUserAndVhost(User, Password, Vhost));
+
+        private IObservable<bool> GetCanExecute()
+        {
+            return this.WhenAnyValue(
+                x => x.User,
+                x => x.Password,
+                x => x.Vhost,
+                (userName, password, vhost) =>
+                    !string.IsNullOrEmpty(userName) &&
+                    !string.IsNullOrEmpty(password) &&
+                    !string.IsNullOrEmpty(vhost));
+        }
     }
 }
