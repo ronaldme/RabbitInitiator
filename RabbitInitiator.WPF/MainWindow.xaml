@@ -7,27 +7,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:viewModels="clr-namespace:RabbitInitiator.WPF.ViewModels"
-    Title="RabbitInitiator.WPF" Height="150" Width="800"
+    Title="RabbitInitiator.WPF" Height="200" Width="400"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" Grid.Column="0" x:Name="User" />
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="Password" />
-        <Button Grid.Row="0" Grid.Column="2" x:Name="CreateUser" Content="Create user" />
+        <Label Grid.Row="0" Grid.Column="0">Username</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="User" />
 
-        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="VHost" />
-        <Button Grid.Row="1" Grid.Column="2" x:Name="CreateVhost" Content="Create vhost" />
+        <Label Grid.Row="1" Grid.Column="0">Password</Label>
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="Password" />
 
-        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CreateUserAndVhost" Content="Create user / vhost" />
+        <Label Grid.Row="2" Grid.Column="0">vHost</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" x:Name="VHost" />
+
+        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CreateUserAndVhost" Content="Create user / vhost" />
     </Grid>
 </reactiveui:ReactiveWindow>
