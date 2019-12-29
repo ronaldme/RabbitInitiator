@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using RabbitInitiator.Main;
@@ -8,10 +9,13 @@ namespace RabbitInitiator
 {
     class Program
     {
-        private static readonly Initiator initiator = new Initiator();
+        private static readonly Initiator Initiator = new Initiator();
+        private static string rabbitLocation;
 
         static async Task Main(string[] args)
         {
+            if (!string.IsNullOrEmpty(args[0])) rabbitLocation = args[0];
+
             while (true)
             {
                 ShowMenu();
@@ -38,12 +42,30 @@ namespace RabbitInitiator
             switch (val)
             {
                 case 1:
+                    Console.WriteLine("Enabling RabbitMQ management plugin");
+
+                    var process = new Process();
+                    var info = new ProcessStartInfo();
+                    info.FileName = "cmd.exe";
+                    info.RedirectStandardInput = true;
+                    info.WorkingDirectory = Path.Combine(rabbitLocation, "sbin");
+                    process.StartInfo = info;
+                    process.Start();
+
+                    await using (StreamWriter sw = process.StandardInput)
+                        sw.WriteLine("rabbitmq-plugins enable rabbitmq_management");
+
+                    await Task.Delay(6000); // time needed for enabling the plugin
+                    Console.WriteLine("Done.");
                     break;
                 case 2:
                     await CreateUser(val);
                     break;
                 case 3:
                     await CreateUserAndVhostPermissions(val);
+                    break;
+                case 4:
+                    SetRabbitLocation();
                     break;
             }
         }
@@ -66,7 +88,7 @@ namespace RabbitInitiator
                 return;
             }
 
-            await initiator.CreateUserAndVhost(splitted[0], splitted[1], splitted[2]);
+            await Initiator.CreateUserAndVhost(splitted[0], splitted[1], splitted[2]);
         }
 
         private static async Task CreateUser(int val)
@@ -87,9 +109,17 @@ namespace RabbitInitiator
                 return;
             }
 
-            await initiator.CreateUser(splitted[0], splitted[1]);
+            await Initiator.CreateUser(splitted[0], splitted[1]);
         }
 
+        private static void SetRabbitLocation()
+        {
+            Console.WriteLine(@"Enter rabbit install location example: C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.1");
+            var location = Console.ReadLine();
+            rabbitLocation = location;
+
+            Console.WriteLine($"Location set to: {rabbitLocation}");
+        }
 
         private static void ShowMenu()
         {
@@ -97,8 +127,9 @@ namespace RabbitInitiator
             Console.WriteLine("1: Setup RabbitMQ management plugin");
             Console.WriteLine("2: Create user");
             Console.WriteLine("3: Create user and vhost");
+            Console.WriteLine($"4: Change rabbit installation location ({rabbitLocation})");
+            Console.WriteLine();
             Console.WriteLine("Q: Quit");
-            Console.WriteLine("Enter menu entry");
         }
     }
 }
