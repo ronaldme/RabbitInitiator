@@ -10,4 +10,8 @@
     <PackageReference Include="log4net" Version="2.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RabbitInitiator.Main\RabbitInitiator.Main.csproj" />
+  </ItemGroup>
+
 </Project>
