@@ -28,9 +28,19 @@ namespace RabbitInitiator.WPF
                         view => view.VHost.Text)
                     .DisposeWith(disposableRegistration);
 
+                this.Bind(ViewModel,
+                        viewModel => viewModel.RabbitLocation,
+                        view => view.RabbitLocation.Text)
+                    .DisposeWith(disposableRegistration);
+
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.CreateUserAndVhost,
                         view => view.CreateUserAndVhost)
+                    .DisposeWith(disposableRegistration);
+
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.EnableManagementPlugin,
+                        view => view.EnableManagementPlugin)
                     .DisposeWith(disposableRegistration);
             });
         }

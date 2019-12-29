@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:viewModels="clr-namespace:RabbitInitiator.WPF.ViewModels"
-    Title="RabbitInitiator.WPF" Height="200" Width="400"
+    Title="RabbitInitiator.WPF" Height="250" Width="440"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -17,6 +17,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -32,6 +35,10 @@
         <Label Grid.Row="2" Grid.Column="0">vHost</Label>
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="VHost" />
 
-        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CreateUserAndVhost" Content="Create user / vhost" />
+        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="CreateUserAndVhost" Content="Create user / vhost" />
+
+        <Label Grid.Row="5" Grid.Column="0">Rabbit path</Label>
+        <TextBox Grid.Row="5" Grid.Column="1" x:Name="RabbitLocation" />
+        <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" x:Name="EnableManagementPlugin" Content="Enable management plugin" />
     </Grid>
 </reactiveui:ReactiveWindow>

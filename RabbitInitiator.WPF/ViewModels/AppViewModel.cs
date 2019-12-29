@@ -10,12 +10,15 @@ namespace RabbitInitiator.WPF.ViewModels
     public class AppViewModel : ReactiveObject
     {
         private readonly Initiator _rabbitInitiator;
+        private readonly ManagementPlugin _managementPlugin;
 
         public AppViewModel()
         {
             _rabbitInitiator = new Initiator();
+            _managementPlugin = new ManagementPlugin();
 
             CreateUserAndVhost = ReactiveCommand.Create(CreateUserAndVhostImpl, GetCanExecute());
+            EnableManagementPlugin = ReactiveCommand.Create(EnableManagementPluginImpl);
         }
 
         private string _user;
@@ -39,10 +42,22 @@ namespace RabbitInitiator.WPF.ViewModels
             set => this.RaiseAndSetIfChanged(ref _vhost, value);
         }
 
+        private string _rabbitLocation = @"C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.1";
+        public string RabbitLocation
+        {
+            get => _rabbitLocation;
+            set => this.RaiseAndSetIfChanged(ref _rabbitLocation, value);
+        }
+
         public ICommand CreateUserAndVhost { get; set; }
+        public ICommand EnableManagementPlugin { get; set; }
 
         public IObservable<Task> CreateUserAndVhostImpl()
             => Observable.Start(async () => await _rabbitInitiator.CreateUserAndVhost(User, Password, Vhost));
+
+        public IObservable<Task> EnableManagementPluginImpl()
+            => Observable.Start(async () => await
+                _managementPlugin.Enable(RabbitLocation));
 
         private IObservable<bool> GetCanExecute()
         {

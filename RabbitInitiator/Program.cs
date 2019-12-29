@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using RabbitInitiator.Main;
@@ -10,6 +8,7 @@ namespace RabbitInitiator
     class Program
     {
         private static readonly Initiator Initiator = new Initiator();
+        private static readonly ManagementPlugin ManagementPlugin = new ManagementPlugin();
         private static string rabbitLocation;
 
         static async Task Main(string[] args)
@@ -43,19 +42,7 @@ namespace RabbitInitiator
             {
                 case 1:
                     Console.WriteLine("Enabling RabbitMQ management plugin");
-
-                    var process = new Process();
-                    var info = new ProcessStartInfo();
-                    info.FileName = "cmd.exe";
-                    info.RedirectStandardInput = true;
-                    info.WorkingDirectory = Path.Combine(rabbitLocation, "sbin");
-                    process.StartInfo = info;
-                    process.Start();
-
-                    await using (StreamWriter sw = process.StandardInput)
-                        sw.WriteLine("rabbitmq-plugins enable rabbitmq_management");
-
-                    await Task.Delay(6000); // time needed for enabling the plugin
+                    await ManagementPlugin.Enable(rabbitLocation);
                     Console.WriteLine("Done.");
                     break;
                 case 2:
